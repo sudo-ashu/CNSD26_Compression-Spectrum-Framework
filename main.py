@@ -55,7 +55,7 @@ def run_all_channels(folder_path, num_channels=100):
 
         X = np.loadtxt(filepath)
 
-        # Filter (match MATLAB FIR-style) ---
+        # Filter (FIR) ---
         fs = 173.61
         X_filt = bts.eegfilt_equivalent(X, fs, 0.53, 40)
 
