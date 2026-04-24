@@ -1,5 +1,4 @@
 import numpy as np
-import main
 import matplotlib.pyplot as plt
 
 
@@ -70,7 +69,7 @@ def plot_frequency_spectrum(signal, fs):
 def plot_entropy_vs_scale(Ent):
     scales = np.arange(1, len(Ent) + 1)
     
-    plt.figure()
+    plt.figure(figsize=(8,4))
     plt.plot(scales, Ent, marker='o')
     plt.xlabel("Scale")
     plt.ylabel("Entropy")

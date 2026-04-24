@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.signal import firwin, filtfilt
-import main
 
 # Shannon Entropy
 def shannon_entropy(seq):
