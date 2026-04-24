@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_all(comp_ratio, scale, Ent):
+def plot_all(comp_ratio, scale, Ent, N, num_bins):
     # Compression spectrum
     plt.figure(figsize=(8,4))
     plt.stem(range(1, len(comp_ratio)+1), comp_ratio)
@@ -12,6 +12,7 @@ def plot_all(comp_ratio, scale, Ent):
     plt.grid()
 
     # Scale evolution
+    # scale_iter = scale[num_bins:num_bins + N]
     plt.figure(figsize=(8,4))
     plt.step(range(len(scale)), scale)
     plt.xlabel("Iteration")

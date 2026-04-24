@@ -43,21 +43,23 @@ samp = np.arange(1, L//2 + 1)
 
 f_ETC = (samp * samp_time) ** (-1)
 
-scale1 = np.arange(1, 21)
+scale1 = np.arange(1, len(comp_ratio)+1)
 plt.figure()
-plt.stem(scale1, comp_ratio[:20])
+plt.stem(scale1, comp_ratio)
 plt.ylabel('Log of Comp. ratio')
 plt.xlabel('Scale')
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 
 # For plot with frequency on x axis
+n = min(len(f_ETC), len(comp_ratio))
 plt.figure()
-plt.stem(np.log(f_ETC[:200]), comp_ratio[:200])
+plt.stem(np.log(f_ETC[:n]), comp_ratio[:n])
 plt.ylabel('Log of Comp. ratio')
 plt.xlabel('log(Frequency)')
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
+plt.show()
 
 non_zero_vals = np.count_nonzero(comp_ratio)
 
@@ -76,3 +78,4 @@ plt.xlabel('Scale')
 plt.ylabel('Entropy of scale formation')
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
+plt.show()

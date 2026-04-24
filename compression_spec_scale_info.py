@@ -46,8 +46,9 @@ def compression_spectrum_scale_info_NEW(signal, num_bins):
         scale.append(scale_val)
         scale_comp.append([scale[idx1], scale[idx2]])
 
-
-        comp_log[scale_val - 1] += np.log2(frac)
+        # comp_log[scale_val - 1] += np.log2(frac)
+        if scale_val - 1 < len(comp_log):   # now it won't overflow
+            comp_log[scale_val - 1] += np.log2(frac)
 
         # update
         sym_current = sym_new

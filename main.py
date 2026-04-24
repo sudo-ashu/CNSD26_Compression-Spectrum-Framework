@@ -17,8 +17,9 @@ X_filt = bts.eegfilt_equivalent(X, fs, lowcut, highcut)
 X_filt = X_filt[50:-50]
 
 # COMPRESSION SPECTRUM
-print(len(comp_spec.compression_spectrum_scale_info_NEW(X_filt, 4)))
-comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(X_filt, 4)
+num_bins = 4
+print(len(comp_spec.compression_spectrum_scale_info_NEW(X_filt, num_bins)))
+comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(X_filt, num_bins)
 
 print("ETC value:", N)
 print("Spectrum bandwidth:", np.count_nonzero(comp_ratio))
@@ -26,7 +27,7 @@ print("Max scale:", max(scale))
 print("Mean fluctuation:", np.mean(np.abs(np.diff(scale))))
 
 # PLOTS
-plts.plot_all(comp_ratio, scale, Ent)
+plts.plot_all(comp_ratio, scale, Ent, N, num_bins)
 plts.plot_frequency_spectrum(X_filt, fs)
 plts.plot_compression_vs_scale(comp_ratio)
 plts.plot_entropy_vs_scale(Ent)
