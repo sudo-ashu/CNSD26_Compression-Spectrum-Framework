@@ -2,6 +2,7 @@ import numpy as np
 import compression_spec_scale_info as comp_spec
 import plottings as plts
 import shannon_eegfilt_partition_findPair_substitute as bts
+import matplotlib.pyplot as plt
 
 file_path = "F056.txt"
 X = np.loadtxt(file_path)
@@ -33,3 +34,83 @@ plts.plot_compression_vs_scale(comp_ratio)
 plts.plot_entropy_vs_scale(Ent)
 
 # return comp_ratio, scale, Ent
+
+# Now running it for all the 100 channels...
+import os
+import pandas as pd
+
+def run_all_channels(folder_path, num_channels=100):
+
+    results = []
+
+    for i in range(1, num_channels + 1):
+        filename = f"F{str(i).zfill(3)}.txt"
+        filepath = os.path.join(folder_path, filename)
+
+        # if not os.path.exists(filepath):
+        #     print(f"Missing: {filename}")
+        #     continue
+
+        print(f"Processing {filename}")
+
+        X = np.loadtxt(filepath)
+
+        # Filter (match MATLAB FIR-style) ---
+        fs = 173.61
+        X_filt = bts.eegfilt_equivalent(X, fs, 0.53, 40)
+
+        # Trimming edges
+        X_filt = X_filt[50:-50]
+
+        comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(X_filt, num_bins)
+
+        # Extract iteration-wise scale
+        scale_iter = scale[num_bins:num_bins + N]
+
+        # Features
+        max_scale = max(scale)
+        bandwidth = np.count_nonzero(comp_ratio)
+        fluctuation = np.mean(np.abs(np.diff(scale_iter))) if len(scale_iter) > 1 else 0
+
+        results.append({
+            "channel": i,
+            "file": filename,
+            "ETC": N,
+            "bandwidth": bandwidth,
+            "max_scale": max_scale,
+            "fluctuation": fluctuation
+        })
+
+    return pd.DataFrame(results)
+
+folder = "F"
+df = run_all_channels(folder)
+
+print(df.head())
+
+df.to_csv("EEG_100ch_results.csv", index=False)
+print("Saved EEG_100ch_results.csv")
+
+# ETC across channels
+plt.plot(df["channel"], df["ETC"], marker='o')
+plt.xlabel("Channel")
+plt.ylabel("ETC")
+plt.title("ETC across 100 EEG Channels")
+plt.grid()
+plt.show()
+
+# Max Scale
+plt.plot(df["channel"], df["max_scale"], marker='o')
+plt.xlabel("Channel")
+plt.ylabel("Max Scale")
+plt.title("Max Scale across Channels")
+plt.grid()
+plt.show()
+
+# Fluctuations
+plt.plot(df["channel"], df["fluctuation"], marker='o')
+plt.xlabel("Channel")
+plt.ylabel("Fluctuation")
+plt.title("Scale Fluctuation across Channels")
+plt.grid()
+plt.show()
