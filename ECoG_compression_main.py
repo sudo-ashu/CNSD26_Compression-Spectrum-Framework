@@ -7,28 +7,21 @@ import compression_spec_scale_info as comp_spec
 import ECoG_plottings as comp_spec_plot
 
 
-def compute_session_features_full(df):
-    session_results = []
+def aggregate_session(df):
 
-    for session in df["session"].unique():
-        df_sess = df[df["session"] == session]
+    df_session = df.groupby("session").agg({
+        "ETC": ["mean", "std"],
+        "bandwidth": ["mean", "std"],
+        "max_scale": ["mean", "std"],
+        "fluctuation": ["mean", "std"],
+        "mean_entropy": ["mean", "std"]
+    })
 
-        session_results.append({
-            "session": session,
+    # Flatten column names
+    df_session.columns = ['_'.join(col) for col in df_session.columns]
+    df_session = df_session.reset_index()
 
-            "ETC_mean": df_sess["ETC"].mean(),
-            "ETC_std": df_sess["ETC"].std(),
-
-            "bandwidth_mean": df_sess["bandwidth"].mean(),
-            "bandwidth_std": df_sess["bandwidth"].std(),
-
-            "max_scale_mean": df_sess["max_scale"].mean(),
-            "max_scale_std": df_sess["max_scale"].std(),
-
-            "fluctuation_mean": df_sess["fluctuation"].mean(),
-            "fluctuation_std": df_sess["fluctuation"].std(),
-        })
-    return pd.DataFrame(session_results)
+    return df_session
 
 
 
@@ -100,5 +93,5 @@ df_results = run_ecog_bins("selected_bins_csv")
 df_results.to_csv("ECoG_compression_features.csv", index=False)
 print("Saved ECoG_compression_features.csv")
 
-compute_session_features_full(df_results)
+aggregate_session(df_results)
 comp_spec_plot.plot_ECoG_Session(df_results)
