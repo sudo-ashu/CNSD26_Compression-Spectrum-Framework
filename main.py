@@ -35,7 +35,7 @@ plts.plot_entropy_vs_scale(Ent)
 
 # return comp_ratio, scale, Ent
 
-# Now running it for all the 100 channels...
+# Now running it for all the 100 reading...
 import os
 import pandas as pd
 
@@ -114,3 +114,50 @@ plt.ylabel("Fluctuation")
 plt.title("Scale Fluctuation across Channels")
 plt.grid()
 plt.show()
+
+
+def plot_mean_trial(folder_path):
+
+    all_scales = []
+
+    for i in range(1, 101):
+
+        filename = f"F{str(i).zfill(3)}.txt"
+        filepath = os.path.join(folder_path, filename)
+
+        if not os.path.exists(filepath):
+            continue
+
+        signal = np.loadtxt(filepath)
+
+        _, N, scale, _, _ = comp_spec.compression_spectrum_scale_info_NEW(signal, 4)
+
+        scale_iter = scale[4:4 + N]
+        all_scales.append(scale_iter)
+
+    # Pad sequences
+    max_len = max(len(s) for s in all_scales)
+    padded = np.full((len(all_scales), max_len), np.nan)
+
+    for i, s in enumerate(all_scales):
+        padded[i, :len(s)] = s
+
+    mean_scale = np.nanmean(padded, axis=0)
+    std_scale = np.nanstd(padded, axis=0)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(mean_scale, label="Mean Scale")
+    plt.fill_between(range(len(mean_scale)),
+                     mean_scale - std_scale,
+                     mean_scale + std_scale,
+                     alpha=0.3)
+
+    plt.xlabel("Iteration")
+    plt.ylabel("Scale")
+    plt.title("Mean Scale  TD across 100 trials)")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+folder = "F"
+plot_mean_trial(folder)
