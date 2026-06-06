@@ -66,17 +66,17 @@ def plot_ECoG_Session(df, num_symbols=4):
         scales = np.arange(1, len(mean_comp) + 1)
         valid = mean_comp > 0
 
-        log_scale = np.log2(scales[valid])
+        scale = scales[valid]
         log_comp = mean_comp[valid]
 
-        markerline, stemlines, baseline = axs[0].stem(log_scale, log_comp)
+        markerline, stemlines, baseline = axs[0].stem(scale, log_comp)
         axs[0].set_title(f"{session} - Compression Spectrum")
-        axs[0].set_xlabel("log2(Scale)")
+        axs[0].set_xlabel("Scale")
         axs[0].set_ylabel("log2(Compression Ratio)")
         axs[0].grid()
 
         # 2️⃣ Scale vs Iteration
-        axs[1].plot(mean_scale)
+        axs[1].stairs(mean_scale, np.arange(len(mean_scale) + 1))
         axs[1].set_title(f"{session} - Scale vs Iteration")
         axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Scale")
