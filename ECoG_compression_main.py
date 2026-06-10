@@ -46,12 +46,12 @@ def run_ecog_bins(base_folder):
             df = pd.read_csv(file_path)
             data = df.values   # shape: (time, channels)
 
-            num_channels = data.shape[1]
+            num_channels = data.shape[0]
             num_symbols = 4
 
             for ch in range(num_channels):
 
-                signal = data[:, ch]
+                signal = data[ch, :]
 
                 # signal = eegfilt_equivalent(signal, fs, 0.53, 40)  -------optional (The ECoG data is already filtered)
 
@@ -81,17 +81,18 @@ def run_ecog_bins(base_folder):
                     "Ent": Ent.tolist()
                 })
 
-                print("ETC value:", N)
-                print("Spectrum bandwidth:", np.count_nonzero(comp_ratio))
-                print("Max scale:", max(scale))
-                print("Mean fluctuation:", np.mean(np.abs(np.diff(scale))))
+                # print("ETC value:", N)
+                # print("Spectrum bandwidth:", np.count_nonzero(comp_ratio))
+                # print("Max scale:", max(scale))
+                # print("Mean fluctuation:", np.mean(np.abs(np.diff(scale))))
 
     return pd.DataFrame(results)
 
-df_results = run_ecog_bins("selected_bins_csv")
+df_results = run_ecog_bins("selected_bins_recording_csv1")
 
-df_results.to_csv("ECoG_compression_features.csv", index=False)
-print("Saved ECoG_compression_features.csv")
+df_results.to_csv("ECoG_compression_features1.csv", index=False)
+# print("Saved ECoG_compression_features2.csv")
 
-aggregate_session(df_results)
+df_sessions = aggregate_session(df_results)
+df_sessions.to_csv("Features_csv1.csv")
 comp_spec_plot.plot_ECoG_Session(df_results)

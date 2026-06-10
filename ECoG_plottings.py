@@ -76,7 +76,9 @@ def plot_ECoG_Session(df, num_symbols=4):
         axs[0].grid()
 
         # 2️⃣ Scale vs Iteration
-        axs[1].stairs(mean_scale, np.arange(len(mean_scale) + 1))
+        iterations = np.arange(len(scale_iter))
+
+        axs[1].step(iterations, scale_iter, where='post')
         axs[1].set_title(f"{session} - Scale vs Iteration")
         axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Scale")

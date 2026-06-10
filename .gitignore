@@ -207,7 +207,16 @@ marimo/_lsp/
 __marimo__/
 
 # CSV file/Foler ˀxˀ
-selected_bins_csv
+selected_bins_recording_csv1
+selected_bins_recording_csv2
+selected_bins_recording_csv3
+selected_bins_recording_csv4
+
+ECoG_compression_features.csv
+ECoG_compression_features1.csv
+ECoG_compression_features2.csv
+ECoG_compression_features3.csv
+ECoG_compression_features4.csv
 
 # Images
 .png
