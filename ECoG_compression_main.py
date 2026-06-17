@@ -28,77 +28,92 @@ def aggregate_state(df):
 def run_ecog_bins(base_folder):
     results = []
 
-    for state in sorted(os.listdir(base_folder)):
-        state_path = os.path.join(base_folder, state)
-        if not os.path.isdir(state_path):
+# if the state folder is also there under some folder then this loop is mandatory
+
+    # for state in sorted(os.listdir(base_folder)):
+    #     state_path = os.path.join(base_folder, state)
+    #     if not os.path.isdir(state_path):
+    #         continue
+
+    #     print(f"\nProcessing State: {state}")
+
+    for recording in sorted(os.listdir(base_folder)):
+        recording_path = os.path.join(base_folder, recording)
+        if not os.path.isdir(recording_path):
             continue
 
-        print(f"\nProcessing State: {state}")
+        print(f"   Processing Recording: {recording}")
 
-        for recording in sorted(os.listdir(state_path)):
-            recording_path = os.path.join(state_path, recording)
-            if not os.path.isdir(recording_path):
+        for file in sorted(os.listdir(recording_path)):
+            if not file.endswith(".csv"):
                 continue
 
-            print(f"   Processing Recording: {recording}")
+            file_path = os.path.join(recording_path, file)
 
-            for file in sorted(os.listdir(recording_path)):
-                if not file.endswith(".csv"):
-                    continue
+            # --- Load bin ---
+            df = pd.read_csv(file_path)
+            data = df.values   # shape: (time, channels)
 
-                file_path = os.path.join(recording_path, file)
+            num_channels = data.shape[0]
+            num_symbols = 4
 
-                # --- Load bin ---
-                df = pd.read_csv(file_path)
-                data = df.values   # shape: (time, channels)
+            for ch in range(num_channels):
+                signal = data[ch, :]
+                # signal = eegfilt_equivalent(signal, fs, 0.53, 40)  -------optional (The ECoG data is already filtered)
 
-                num_channels = data.shape[0]
-                num_symbols = 4
+                # Running compression spectrum file
+                comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(signal, num_symbols)
 
-                for ch in range(num_channels):
-                    signal = data[ch, :]
-                    # signal = eegfilt_equivalent(signal, fs, 0.53, 40)  -------optional (The ECoG data is already filtered)
+                # Extracting iteration scale
+                scale_iter = scale[num_symbols:num_symbols + N]
 
-                    # Running compression spectrum file
-                    comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(signal, num_symbols)
+                # Features
+                max_scale = max(scale) if len(scale) > 0 else 0
+                bandwidth = np.count_nonzero(comp_ratio)
+                fluctuation = np.mean(np.abs(np.diff(scale_iter))) if len(scale_iter) > 1 else 0
+                mean_entropy = np.mean(Ent)
 
-                    # Extracting iteration scale 
-                    scale_iter = scale[num_symbols:num_symbols + N]
+                results.append({
 
-                    # Features 
-                    max_scale = max(scale) if len(scale) > 0 else 0
-                    bandwidth = np.count_nonzero(comp_ratio)
-                    fluctuation = np.mean(np.abs(np.diff(scale_iter))) if len(scale_iter) > 1 else 0
-                    mean_entropy = np.mean(Ent)
+                    # "state": state,
+                    "recording": recording,
+                    "bin": file,
+                    "channel": ch + 1,
 
-                    results.append({
+                    "ETC": N,
+                    "bandwidth": bandwidth,
+                    "max_scale": max_scale,
+                    "fluctuation": fluctuation,
+                    "mean_entropy": mean_entropy,
 
-                        "state": state,
-                        "recording": recording,
-                        "bin": file,
-                        "channel": ch + 1,
+                    "comp_ratio": comp_ratio.tolist(),
+                    "scale": scale,
+                    "Ent": Ent.tolist()
 
-                        "ETC": N,
-                        "bandwidth": bandwidth,
-                        "max_scale": max_scale,
-                        "fluctuation": fluctuation,
-                        "mean_entropy": mean_entropy,
-
-                        "comp_ratio": comp_ratio.tolist(),
-                        "scale": scale,
-                        "Ent": Ent.tolist()
-
-                    })
+                })
 
     return pd.DataFrame(results)
 
-df_results = run_ecog_bins("Selected_Bins_15_Rec_SLP_Day2")
+df_results = run_ecog_bins("Sleep_state")
 
-df_results.to_csv("ECoG_compression_features4.csv", index=False)
+# df_results.to_csv("AnesthetizedCSV.csv", index=False)
 # print("Saved ECoG_compression_features2.csv")
 
-df_states = aggregate_state(df_results)
-df_states.to_csv("Features_csv4.csv")
-comp_spec_plot.plot_ECoG_States(df_results)
+# df_states = aggregate_state(df_results)
+# df_states.to_csv("Features_csv4.csv")
+# comp_spec_plot.plot_ECoG_States(df_results)
+
+df_recording = (df_results.groupby(["recording"]).agg({
+        "ETC": "mean",
+        "bandwidth": "mean",
+        "max_scale": "mean",
+        "fluctuation": "mean",
+        "mean_entropy": "mean"
+    }).reset_index()
+)
+
+df_recording.to_csv("SleepCSV.csv", index=False)
+print(df_results.shape)
+print(df_recording.shape)
 
 #################################################################

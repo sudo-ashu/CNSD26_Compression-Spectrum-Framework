@@ -217,6 +217,9 @@ Selected_Bins_15_Rec_SLP_Day1
 Selected_Bins_15_Rec_SLP_Day2
 Final CSV files
 Figures
+Anesthetized_state
+Awake_state
+Sleep_state
 
 ECoG_compression_features.csv
 ECoG_compression_features1.csv
@@ -227,6 +230,10 @@ KTMD_Day1.csv
 KTMD_Day2.csv
 SLP_Day1.csv
 SLP_Day2.csv
+
+AnesthetizedCSV.csv
+AwakeCSV.csv
+SleepCSV.csv
 
 # Images
 .png
