@@ -223,6 +223,10 @@ ECoG_compression_features1.csv
 ECoG_compression_features2.csv
 ECoG_compression_features3.csv
 ECoG_compression_features4.csv
+KTMD_Day1.csv
+KTMD_Day2.csv
+SLP_Day1.csv
+SLP_Day2.csv
 
 # Images
 .png

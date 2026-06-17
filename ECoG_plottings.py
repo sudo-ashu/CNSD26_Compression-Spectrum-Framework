@@ -4,13 +4,12 @@ import compression_spec_scale_info as comp_spec
 import matplotlib.pyplot as plt
 import os
 
-def plot_ECoG_Session(df, num_symbols=4):
+def plot_ECoG_States(df, num_symbols=4):
+    states = df["state"].unique()
 
-    sessions = df["session"].unique()
+    for state in states:
 
-    for session in sessions:
-
-        df_sess = df[df["session"] == session]
+        df_sess = df[df["state"] == state]
 
         all_comp = []
         all_scales = []
@@ -70,7 +69,7 @@ def plot_ECoG_Session(df, num_symbols=4):
         log_comp = mean_comp[valid]
 
         markerline, stemlines, baseline = axs[0].stem(scale, log_comp)
-        axs[0].set_title(f"{session} - Compression Spectrum")
+        axs[0].set_title(f"{state} - Compression Spectrum")
         axs[0].set_xlabel("Scale")
         axs[0].set_ylabel("log2(Compression Ratio)")
         axs[0].grid()
@@ -79,7 +78,7 @@ def plot_ECoG_Session(df, num_symbols=4):
         iterations = np.arange(len(scale_iter))
 
         axs[1].step(iterations, scale_iter, where='post')
-        axs[1].set_title(f"{session} - Scale vs Iteration")
+        axs[1].set_title(f"{state} - Scale vs Iteration")
         axs[1].set_xlabel("Iteration")
         axs[1].set_ylabel("Scale")
         axs[1].grid()
@@ -87,7 +86,7 @@ def plot_ECoG_Session(df, num_symbols=4):
         # 3️⃣ Entropy vs Scale
         scales_e = np.arange(1, len(mean_entropy) + 1)
         axs[2].plot(scales_e, mean_entropy, marker='o')
-        axs[2].set_title(f"{session} - Entropy vs Scale")
+        axs[2].set_title(f"{state} - Entropy vs Scale")
         axs[2].set_xlabel("Scale")
         axs[2].set_ylabel("Entropy")
         axs[2].grid()
