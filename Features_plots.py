@@ -81,6 +81,3 @@ for feature in features:
 
 plt.show()
 
-# 2. between awake and sleep
-
-# 3. between sleep and anethetic
