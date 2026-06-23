@@ -103,5 +103,20 @@ for feature in features[1:4]:
         groups=combined["state"],
         alpha=0.05
     )
-
     print(f"{feature}: {tukey_val}")
+
+# 1. for [ETC] we run Mann-Whitney test
+from scipy.stats import mannwhitneyu
+
+p1 = mannwhitneyu(awake_df["ETC"], sleep_df["ETC"], alternative="two-sided").pvalue
+p2 = mannwhitneyu(awake_df["ETC"], anes_df["ETC"], alternative="two-sided").pvalue
+p3 = mannwhitneyu(sleep_df["ETC"], anes_df["ETC"], alternative="two-sided").pvalue
+
+print("Awake vs Sleep:", p1)
+print("Awake vs Anesthetized:", p2)
+print("Sleep vs Anesthetized:", p3)
+
+from statsmodels.stats.multitest import multipletests
+pvals = [p1, p2, p3]
+reject, p_corrected, _, _ = multipletests( pvals, method="holm")
+print(f"p-corrected value for Mann-Whitney test on ETC: {p_corrected}")
