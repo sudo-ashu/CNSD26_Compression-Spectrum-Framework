@@ -1,5 +1,7 @@
 from scipy import stats
-from scipy.stats import shapiro, f_oneway, kruskal
+from scipy.stats import shapiro, f_oneway, kruskal, mannwhitneyu
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from statsmodels.stats.multitest import multipletests
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -80,3 +82,26 @@ H, p = kruskal(
 
 print("H-statistic =", H)
 print("p-value =", p)
+
+##########################################
+## now we run POST HOC test ##############
+
+# 1. for [Bandwidth, Max_Scale and Fluctuation] we run Tukey HSD test
+awake_df["state"] = "Awake"
+sleep_df["state"] = "Sleep"
+anes_df["state"] = "Anesthetized"
+
+combined = pd.concat(
+    [awake_df, sleep_df, anes_df],
+    ignore_index=True
+)
+
+
+for feature in features[1:4]:
+    tukey_val = pairwise_tukeyhsd(
+        endog=combined[feature],
+        groups=combined["state"],
+        alpha=0.05
+    )
+
+    print(f"{feature}: {tukey_val}")
