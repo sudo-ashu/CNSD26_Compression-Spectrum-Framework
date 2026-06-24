@@ -166,6 +166,8 @@ The results suggest that compression-spectrum-derived measures capture meaningfu
 
 ---
 
+To be presented at: [CNSD, 2026 IISER TVM]
+
 ## Contact
 
 Ashutosh Rathore
@@ -190,5 +192,5 @@ https://www.kaggle.com/datasets/simp0la/session-wise-clean-monkey-data
 - State-wise clean bins data <br>
 https://www.kaggle.com/datasets/simp0la/state-wise-clean-bin-data
 
-- State-wise clean bins data (30-bins each in state) <br>
+- State-wise clean bins data (30-bins each in the state) <br>
 https://www.kaggle.com/datasets/simp0la/state-wise-monkey-brain-recording-30-bins-each?select=Sleep_state
