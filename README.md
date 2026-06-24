@@ -170,22 +170,25 @@ To be presented at: [CNSD, 2026 IISER TVM]
 
 ## Contact
 
+```
 Ashutosh Rathore
 M.S. Computational Engineering,
 School of Interdisciplinary Studies
 Indian Institute of Technology Madras
 Chennai, 600036
+```
 
 Research Topic:
 Compression Spectrum Analysis of Monkey ECoG Signals Across
 Awake, Sleep, and Anesthetized States
 
 Guide:
+```
 Dr. Aditi Kathpalia
 Department of Applied Mechanics and Biomedical Engineering
 Indian Institute of Technology Madras
 Chennai, 600036
-
+```
 - Session-wise clean bins data <br>
 https://www.kaggle.com/datasets/simp0la/session-wise-clean-monkey-data
 
