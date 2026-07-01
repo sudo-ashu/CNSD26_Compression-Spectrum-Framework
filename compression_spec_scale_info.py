@@ -31,8 +31,8 @@ def compression_spectrum_scale_info_NEW(signal, num_bins):
         sym_new, rep_sym = bts.substitute(sym_current, pair)
 
         new_len = len(sym_new)
-        # if length == new_len + 1:
-        #     break
+        if length == new_len + 1:
+            break
 
         frac = length / new_len
 
