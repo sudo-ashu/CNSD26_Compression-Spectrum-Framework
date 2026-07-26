@@ -215,11 +215,18 @@ Selected_Bins_15_Rec_KTMD_Day1
 Selected_Bins_15_Rec_KTMD_Day2
 Selected_Bins_15_Rec_SLP_Day1
 Selected_Bins_15_Rec_SLP_Day2
+George_Selected_15_Recordings_Anes_Day1
+George_Selected_15_Recordings_Anes_Day2
+George_Selected_15_Recordings_SLP_Day1
+George_Selected_15_Recordings_SLP_Day2
 Final CSV files
 Figures
 Anesthetized_state
 Awake_state
 Sleep_state
+Anesthetized_Region_State
+Awake_Region_State
+Sleep_Region_State
 
 ECoG_compression_features.csv
 ECoG_compression_features1.csv
