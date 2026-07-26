@@ -6,10 +6,21 @@ import matplotlib.pyplot as plt
 import compression_spec_scale_info as comp_spec
 import ECoG_plottings as comp_spec_plot
 
+def aggregate_state_unbiased(df):
+    if df.empty:
+        raise ValueError("Cannot aggregate: The input DataFrame is empty. Check your folder structure!")
 
-def aggregate_state(df):
+    # Step 1: Mean per recording first (equalizes single-channel vs WB weight)
+    df_rec = df.groupby(["state", "region", "recording"], as_index=False).agg({
+        "ETC": "mean",
+        "bandwidth": "mean",
+        "max_scale": "mean",
+        "fluctuation": "mean",
+        "mean_entropy": "mean"
+    })
 
-    df_state = df.groupby("state").agg({
+    # Step 2: Compute mean & std across recordings for each state/region pair
+    df_state = df_rec.groupby(["state", "region"]).agg({
         "ETC": ["mean", "std"],
         "bandwidth": ["mean", "std"],
         "max_scale": ["mean", "std"],
@@ -17,103 +28,108 @@ def aggregate_state(df):
         "mean_entropy": ["mean", "std"]
     })
 
-    # Flatten column names
     df_state.columns = ['_'.join(col) for col in df_state.columns]
-    df_state = df_state.reset_index()
-
-    return df_state
+    return df_state.reset_index()
 
 
-
-def run_ecog_bins(base_folder):
+def run_ecog_bins(base_folder, num_symbols=4):
     results = []
 
-# if the state folder is also there under some folder then this loop is mandatory
+    if not os.path.exists(base_folder):
+        raise FileNotFoundError(f"Base folder '{base_folder}' does not exist! Check your path.")
 
-    # for state in sorted(os.listdir(base_folder)):
-    #     state_path = os.path.join(base_folder, state)
-    #     if not os.path.isdir(state_path):
-    #         continue
-
-    #     print(f"\nProcessing State: {state}")
-
-    for recording in sorted(os.listdir(base_folder)):
-        recording_path = os.path.join(base_folder, recording)
-        if not os.path.isdir(recording_path):
+    # Level 1: State (Awake, Sleep, Anaesthetized)
+    for state in sorted(os.listdir(base_folder)):
+        state_path = os.path.join(base_folder, state)
+        if not os.path.isdir(state_path) or state.startswith('.'):
             continue
 
-        print(f"   Processing Recording: {recording}")
+        print(f"\n================ Processing State: {state} ================")
 
-        for file in sorted(os.listdir(recording_path)):
-            if not file.endswith(".csv"):
+        # Level 2: Brain Region (HV, MP, LP, ..., WB)
+        for region in sorted(os.listdir(state_path)):
+            region_path = os.path.join(state_path, region)
+            if not os.path.isdir(region_path) or region.startswith('.'):
                 continue
 
-            file_path = os.path.join(recording_path, file)
+            print(f"  --> Region: {region}")
 
-            # --- Load bin ---
-            df = pd.read_csv(file_path)
-            data = df.values   # shape: (time, channels)
+            # Level 3: Recording (Recording_01 ... Recording_30)
+            for recording in sorted(os.listdir(region_path)):
+                recording_path = os.path.join(region_path, recording)
+                if not os.path.isdir(recording_path) or recording.startswith('.'):
+                    continue
 
-            num_channels = data.shape[0]
-            num_symbols = 4
+                # Level 4: Bin files (bin_01.csv ... bin_10.csv)
+                for file in sorted(os.listdir(recording_path)):
+                    if not file.endswith(".csv"):
+                        continue
 
-            for ch in range(num_channels):
-                signal = data[ch, :]
-                # signal = eegfilt_equivalent(signal, fs, 0.53, 40)  -------optional (The ECoG data is already filtered)
+                    file_path = os.path.join(recording_path, file)
 
-                # Running compression spectrum file
-                comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(signal, num_symbols)
+                    # --- Load ECoG bin ---
+                    df = pd.read_csv(file_path, header=None) 
+                    data = df.values  # Expected shape: (channels, 400)
 
-                # Extracting iteration scale
-                scale_iter = scale[num_symbols:num_symbols + N]
+                    # Dynamic shape check: ensures shape is (channels, time)
+                    if data.shape[0] > data.shape[1]: 
+                        data = data.T  # Transpose if rows happen to be time points
 
-                # Features
-                max_scale = max(scale) if len(scale) > 0 else 0
-                bandwidth = np.count_nonzero(comp_ratio)
-                fluctuation = np.mean(np.abs(np.diff(scale_iter))) if len(scale_iter) > 1 else 0
-                mean_entropy = np.mean(Ent)
+                    num_channels, num_timepoints = data.shape
 
-                results.append({
+                    for ch in range(num_channels):
+                        signal = data[ch, :]
 
-                    # "state": state,
-                    "recording": recording,
-                    "bin": file,
-                    "channel": ch + 1,
+                        # Compression spectrum pipeline
+                        comp_ratio, N, scale, scale_comp_cell, Ent = comp_spec.compression_spectrum_scale_info_NEW(
+                            signal, num_symbols
+                        )
 
-                    "ETC": N,
-                    "bandwidth": bandwidth,
-                    "max_scale": max_scale,
-                    "fluctuation": fluctuation,
-                    "mean_entropy": mean_entropy,
+                        scale_iter = scale[num_symbols : num_symbols + N]
 
-                    "comp_ratio": comp_ratio.tolist(),
-                    "scale": scale,
-                    "Ent": Ent.tolist()
+                        # Feature extraction
+                        max_scale = max(scale) if len(scale) > 0 else 0
+                        bandwidth = np.count_nonzero(comp_ratio)
+                        fluctuation = np.mean(np.abs(np.diff(scale_iter))) if len(scale_iter) > 1 else 0
+                        mean_entropy = np.mean(Ent)
 
-                })
+                        results.append({
+                            "state": state,
+                            "region": region,
+                            "recording": recording,
+                            "bin": file,
+                            "channel": ch + 1,
 
-    return pd.DataFrame(results)
+                            "ETC": N,
+                            "bandwidth": bandwidth,
+                            "max_scale": max_scale,
+                            "fluctuation": fluctuation,
+                            "mean_entropy": mean_entropy,
 
-df_results = run_ecog_bins("Sleep_state")
+                            "comp_ratio": comp_ratio.tolist() if hasattr(comp_ratio, "tolist") else comp_ratio,
+                            "scale": scale.tolist() if hasattr(scale, "tolist") else scale,
+                            "Ent": Ent.tolist() if hasattr(Ent, "tolist") else Ent
+                        })
 
-# df_results.to_csv("AnesthetizedCSV.csv", index=False)
-# print("Saved ECoG_compression_features2.csv")
+    df = pd.DataFrame(results)
+    if df.empty:
+        print(f"\n WARNING: No CSV files were processed in '{base_folder}'. Please verify your directory structure matches:")
+        print(f"   {base_folder}/ <State>/ <Region>/ <Recording>/ <bin.csv>")
+        
+    return df
 
-# df_states = aggregate_state(df_results)
-# df_states.to_csv("Features_csv4.csv")
-# comp_spec_plot.plot_ECoG_States(df_results)
 
-df_recording = (df_results.groupby(["recording"]).agg({
-        "ETC": "mean",
-        "bandwidth": "mean",
-        "max_scale": "mean",
-        "fluctuation": "mean",
-        "mean_entropy": "mean"
-    }).reset_index()
-)
+# --- Execution ---
+df_results = run_ecog_bins("States")
 
-df_recording.to_csv("SleepCSV.csv", index=False)
-print(df_results.shape)
-print(df_recording.shape)
+if not df_results.empty:
+    # Save full granular results
+    df_results.to_csv("ECoG_Granular_Results.csv", index=False)
 
-#################################################################
+    # Generate and save aggregated summary
+    df_states = aggregate_state_unbiased(df_results)
+    df_states.to_csv("Features_State_Region_Summary.csv", index=False)
+
+    print("\nProcessing complete!")
+    print(f"Granular Results Shape: {df_results.shape}")
+    print(f"Summary Results Shape:  {df_states.shape}")
