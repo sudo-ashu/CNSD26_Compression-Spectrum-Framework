@@ -59,21 +59,24 @@ def run_ecog_bins(base_folder, num_symbols=4):
                 recording_path = os.path.join(region_path, recording)
                 if not os.path.isdir(recording_path) or recording.startswith('.'):
                     continue
-
-                # Level 4: Bin files (bin_01.csv ... bin_10.csv)
+                
+                # Level 4
                 for file in sorted(os.listdir(recording_path)):
                     if not file.endswith(".csv"):
                         continue
 
                     file_path = os.path.join(recording_path, file)
 
-                    # --- Load ECoG bin ---
                     df = pd.read_csv(file_path, header=None) 
-                    data = df.values  # Expected shape: (channels, 400)
+                    data = df.values  # (channels, 400)
 
-                    # Dynamic shape check: ensures shape is (channels, time)
                     if data.shape[0] > data.shape[1]: 
                         data = data.T  # Transpose if rows happen to be time points
+
+                    # Dropping the index column if the layout is exactly 2 rows
+                    if data.shape[0] == 2:
+                        data = data[1:, :]  
+                    # -----------------------
 
                     num_channels, num_timepoints = data.shape
 
@@ -107,7 +110,7 @@ def run_ecog_bins(base_folder, num_symbols=4):
                             "mean_entropy": mean_entropy,
 
                             "comp_ratio": comp_ratio.tolist() if hasattr(comp_ratio, "tolist") else comp_ratio,
-                            "scale": scale.tolist() if hasattr(scale, "tolist") else scale,
+                            "scale": scale.tolist() if hasattr(scale, "tolist") else scale, # type: ignore
                             "Ent": Ent.tolist() if hasattr(Ent, "tolist") else Ent
                         })
 
