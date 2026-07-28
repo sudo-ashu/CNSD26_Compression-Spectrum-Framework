@@ -64,12 +64,12 @@ def plot_feature_by_region_smart(df, region, feature, ylabel=None, save=False):
         posthoc_df = tukey_df[['group1', 'group2', 'p-adj']].copy()
         
     else:
-        print("--> Variances are UNequal. Using Welch's ANOVA & Games-Howell.")
+        print("--> Variances are Unequal. Using Welch's ANOVA & Games-Howell.")
         
         # Welch's ANOVA
         welch_results = pg.welch_anova(dv=feature, between='state', data=df_rec)
         F = welch_results['F'].values[0]
-        p = welch_results['p-unc'].values[0]
+        p = welch_results['p_unc'].values[0]
         title_stats = f"Welch's ANOVA (p = {p:.2e})"
         print(f"F = {F:.4f}, p = {p:.3e}")
 
@@ -200,7 +200,7 @@ def plot_feature_by_region_smart(df, region, feature, ylabel=None, save=False):
 # 2. To run for ALL regions in a loop:
 all_regions = df_all['region'].unique()
 for r in all_regions:
-    plot_feature_by_region_smart(df=df_all, region=r, feature="bandwidth", ylabel="Maximum scale in the spectrum", save=True)
+    plot_feature_by_region_smart(df=df_all, region=r, feature="bandwidth", ylabel="Spectral Bandwidth", save=True)
 
 all_regions = df_all['region'].unique()
 for r in all_regions:
