@@ -6,9 +6,7 @@ import pingouin as pg
 from scipy.stats import f_oneway, levene
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
-# ----------------------------------------------------
-# 1. Load the single granular dataset
-# ----------------------------------------------------
+#   Load the single granular dataset
 df_all = pd.read_csv("ECoG_Granular_Results.csv")
 
 # Clean up state names 
@@ -18,9 +16,7 @@ df_all['state'] = df_all['state'].replace({'Anaesthetized': 'Anesthetized'})
 def plot_feature_by_region_smart(df, region, feature, ylabel=None, save=False):
     print(f"\n========== {feature.upper()} in REGION: {region} ==========")
     
-    # ----------------------------------------------------
     # Filter and Aggregate Data
-    # ----------------------------------------------------
     df_region = df[df["region"] == region]
     
     if df_region.empty:
@@ -41,9 +37,7 @@ def plot_feature_by_region_smart(df, region, feature, ylabel=None, save=False):
 
     labels = ["Awake", "Sleep", "Anesthetized"]
 
-    # ----------------------------------------------------
-    # Levene's Test & Decision Tree
-    # ----------------------------------------------------
+    # Levene's Test
     stat, p_levene = levene(awake, sleep, anes)
     print(f"Levene's Test p-value: {p_levene:.4e}")
 
@@ -186,18 +180,6 @@ def plot_feature_by_region_smart(df, region, feature, ylabel=None, save=False):
         
     plt.show()
 
-# --- Execution Examples ---
-
-# 1. Plot Maximum Scale for the Whole Brain (WB) region
-# plot_feature_by_region_smart(
-#     df=df_all, 
-#     region="WB", 
-#     feature="max_scale", 
-#     ylabel="Maximum scale in the spectrum", 
-#     save=True
-# )
-
-# 2. To run for ALL regions in a loop:
 all_regions = df_all['region'].unique()
 for r in all_regions:
     plot_feature_by_region_smart(df=df_all, region=r, feature="bandwidth", ylabel="Spectral Bandwidth", save=True)

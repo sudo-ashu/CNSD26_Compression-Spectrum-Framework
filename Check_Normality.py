@@ -5,7 +5,7 @@ from scipy.stats import shapiro, probplot
 def check_normality_assumptions(df, region, feature):
 
     print(f"\nNORMALITY CHECK: {feature.upper()} in REGION: {region}")
-    
+
     # 1. Filter and Aggregating the data
     df_region = df[df["region"] == region]
     
