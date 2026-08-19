@@ -1,0 +1,55 @@
+Region,State,Metric,Shapiro_Wilk_p_value,Alpha,Normality_Result,Top_3_Highest_Potential_Outliers,Top_3_Lowest_Potential_Outliers
+HV,Awake,MAX_SCALE,9.3511e-01,0.05,Passed (Normal),,
+HV,Sleep,MAX_SCALE,3.1020e-01,0.05,Passed (Normal),,
+HV,Anesthetized,MAX_SCALE,3.8075e-01,0.05,Passed (Normal),,
+LC,Awake,MAX_SCALE,9.0757e-01,0.05,Passed (Normal),,
+LC,Sleep,MAX_SCALE,2.2847e-01,0.05,Passed (Normal),,
+LC,Anesthetized,MAX_SCALE,1.7288e-02,0.05,Failed (Not Normal),"Recording_21 (35.2571); Recording_06 (33.1000); Recording_27 (32.5429)","Recording_02 (23.7000); Recording_12 (23.9000); Recording_09 (24.1000)"
+LP,Awake,MAX_SCALE,7.9896e-01,0.05,Passed (Normal),,
+LP,Sleep,MAX_SCALE,1.8098e-02,0.05,Failed (Not Normal),"Recording_05 (24.6833); Recording_15 (24.6000); Recording_26 (24.2833)","Recording_10 (20.7167); Recording_01 (20.7833); Recording_28 (21.0000)"
+LP,Anesthetized,MAX_SCALE,1.8203e-01,0.05,Passed (Normal),,
+MP,Awake,MAX_SCALE,1.3680e-01,0.05,Passed (Normal),,
+MP,Sleep,MAX_SCALE,1.4623e-01,0.05,Passed (Normal),,
+MP,Anesthetized,MAX_SCALE,2.0811e-01,0.05,Passed (Normal),,
+MS,Awake,MAX_SCALE,1.7589e-06,0.05,Failed (Not Normal),"Recording_19 (30.9000); Recording_16 (25.8200); Recording_18 (24.3400)","Recording_29 (19.5400); Recording_02 (19.5600); Recording_20 (19.5800)"
+MS,Sleep,MAX_SCALE,9.9856e-01,0.05,Passed (Normal),,
+MS,Anesthetized,MAX_SCALE,9.1517e-01,0.05,Passed (Normal),,
+PC,Awake,MAX_SCALE,1.5273e-01,0.05,Passed (Normal),,
+PC,Sleep,MAX_SCALE,3.6661e-02,0.05,Failed (Not Normal),"Recording_29 (24.6000); Recording_24 (24.5571); Recording_07 (24.4571)","Recording_25 (20.7857); Recording_18 (20.9000); Recording_13 (21.1143)"
+PC,Anesthetized,MAX_SCALE,8.4910e-01,0.05,Passed (Normal),,
+PM,Awake,MAX_SCALE,9.9093e-01,0.05,Passed (Normal),,
+PM,Sleep,MAX_SCALE,4.4708e-02,0.05,Failed (Not Normal),"Recording_11 (25.0000); Recording_12 (23.7200); Recording_21 (23.3400)","Recording_23 (20.2600); Recording_10 (20.3200); Recording_22 (20.3800)"
+PM,Anesthetized,MAX_SCALE,2.8727e-01,0.05,Passed (Normal),,
+TC,Awake,MAX_SCALE,7.6986e-05,0.05,Failed (Not Normal),"Recording_21 (26.5143); Recording_19 (26.1714); Recording_18 (24.9429)","Recording_08 (18.9143); Recording_02 (19.3571); Recording_07 (19.5714)"
+TC,Sleep,MAX_SCALE,8.2226e-02,0.05,Passed (Normal),,
+TC,Anesthetized,MAX_SCALE,7.8699e-02,0.05,Passed (Normal),,
+WB,Awake,MAX_SCALE,5.4463e-03,0.05,Failed (Not Normal),"Recording_18 (26.1566); Recording_19 (23.5357); Recording_23 (23.4442)","Recording_29 (19.5853); Recording_20 (19.5946); Recording_11 (19.7380)"
+WB,Sleep,MAX_SCALE,1.0225e-01,0.05,Passed (Normal),,
+WB,Anesthetized,MAX_SCALE,6.7357e-01,0.05,Passed (Normal),,
+HV,Awake,BANDWIDTH,4.2593e-01,0.05,Passed (Normal),,
+HV,Sleep,BANDWIDTH,4.5277e-01,0.05,Passed (Normal),,
+HV,Anesthetized,BANDWIDTH,9.3974e-02,0.05,Passed (Normal),,
+LC,Awake,BANDWIDTH,7.3462e-01,0.05,Passed (Normal),,
+LC,Sleep,BANDWIDTH,9.9634e-02,0.05,Passed (Normal),,
+LC,Anesthetized,BANDWIDTH,5.2807e-02,0.05,Passed (Normal),,
+LP,Awake,BANDWIDTH,5.4718e-01,0.05,Passed (Normal),,
+LP,Sleep,BANDWIDTH,4.1196e-01,0.05,Passed (Normal),,
+LP,Anesthetized,BANDWIDTH,1.7527e-03,0.05,Failed (Not Normal),"Recording_11 (12.0000); Recording_08 (11.5000); Recording_02 (11.4000)","Recording_18 (9.1000); Recording_30 (9.1500); Recording_26 (9.1500)"
+MP,Awake,BANDWIDTH,1.0524e-01,0.05,Passed (Normal),,
+MP,Sleep,BANDWIDTH,5.8482e-01,0.05,Passed (Normal),,
+MP,Anesthetized,BANDWIDTH,1.8688e-02,0.05,Failed (Not Normal),"Recording_08 (11.5000); Recording_15 (11.0000); Recording_12 (10.8000)","Recording_28 (9.0400); Recording_23 (9.1000); Recording_16 (9.2800)"
+MS,Awake,BANDWIDTH,4.0093e-01,0.05,Passed (Normal),,
+MS,Sleep,BANDWIDTH,1.0568e-01,0.05,Passed (Normal),,
+MS,Anesthetized,BANDWIDTH,8.9868e-02,0.05,Passed (Normal),,
+PC,Awake,BANDWIDTH,6.8323e-01,0.05,Passed (Normal),,
+PC,Sleep,BANDWIDTH,5.6739e-01,0.05,Passed (Normal),,
+PC,Anesthetized,BANDWIDTH,5.0926e-03,0.05,Failed (Not Normal),"Recording_11 (11.7000); Recording_02 (11.2000); Recording_14 (11.2000)","Recording_22 (9.4143); Recording_27 (9.4429); Recording_21 (9.4429)"
+PM,Awake,BANDWIDTH,1.1525e-01,0.05,Passed (Normal),,
+PM,Sleep,BANDWIDTH,2.9490e-01,0.05,Passed (Normal),,
+PM,Anesthetized,BANDWIDTH,4.8611e-03,0.05,Failed (Not Normal),"Recording_02 (11.4000); Recording_01 (11.2000); Recording_11 (11.1000)","Recording_25 (8.8200); Recording_29 (8.9000); Recording_18 (8.9000)"
+TC,Awake,BANDWIDTH,9.7456e-01,0.05,Passed (Normal),,
+TC,Sleep,BANDWIDTH,3.4898e-01,0.05,Passed (Normal),,
+TC,Anesthetized,BANDWIDTH,7.0030e-02,0.05,Passed (Normal),,
+WB,Awake,BANDWIDTH,1.5809e-01,0.05,Passed (Normal),,
+WB,Sleep,BANDWIDTH,1.6334e-01,0.05,Passed (Normal),,
+WB,Anesthetized,BANDWIDTH,6.6793e-01,0.05,Passed (Normal),,
