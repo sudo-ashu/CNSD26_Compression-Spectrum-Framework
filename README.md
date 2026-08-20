@@ -197,3 +197,6 @@ https://www.kaggle.com/datasets/simp0la/state-wise-clean-bin-data
 
 - State-wise clean bins data (30-bins each in the state) <br>
 https://www.kaggle.com/datasets/simp0la/state-wise-monkey-brain-recording-30-bins-each?select=Sleep_state
+
+- State & Region-wise brain recording (30 recordings in each state) <br>
+https://www.kaggle.com/datasets/simp0la/state-and-region-wise-monkey-brain-data-30-recs
