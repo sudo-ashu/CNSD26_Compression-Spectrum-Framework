@@ -123,16 +123,29 @@ def run_ecog_bins(base_folder, num_symbols=4):
 
 
 # --- Execution ---
-df_results = run_ecog_bins("States")
+df_results_single = run_ecog_bins("States_Single")
+df_results_averaged = run_ecog_bins("States_Averaged")
 
-if not df_results.empty:
+if not df_results_single.empty:
     # Save full granular results
-    df_results.to_csv("ECoG_Granular_Results.csv", index=False)
+    df_results_single.to_csv("ECoG_Granular_Results_Single.csv", index=False)
 
     # Generate and save aggregated summary
-    df_states = aggregate_state_unbiased(df_results)
-    df_states.to_csv("Features_State_Region_Summary.csv", index=False)
+    df_states_single = aggregate_state_unbiased(df_results_single)
+    df_states_single.to_csv("Features_State_Region_Summary_Single.csv", index=False)
 
     print("\nProcessing complete!")
-    print(f"Granular Results Shape: {df_results.shape}")
-    print(f"Summary Results Shape:  {df_states.shape}")
+    print(f"Granular Results Single Shape: {df_results_single.shape}")
+    print(f"Summary Results Single Shape:  {df_states_single.shape}")
+
+if not df_results_averaged.empty:
+    # Save full granular results
+    df_results_averaged.to_csv("ECoG_Granular_Results_Averaged.csv", index=False)
+
+    # Generate and save aggregated summary
+    df_states_averaged = aggregate_state_unbiased(df_results_averaged)
+    df_states_averaged.to_csv("Features_State_Region_Summary_Averaged.csv", index=False)
+
+    print("\nProcessing complete!")
+    print(f"Granular Results Average Shape: {df_results_averaged.shape}")
+    print(f"Summary Results Average Shape:  {df_states_averaged.shape}")

@@ -6,10 +6,12 @@ import pingouin as pg
 from scipy.stats import f_oneway, levene
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
-#   Load the single granular dataset
-df_all = pd.read_csv("ECoG_Granular_Results.csv")
+#   Loading the granular dataset
+# df_all = pd.read_csv("ECoG_Granular_Results_Single.csv")
+df_all = pd.read_csv("ECoG_Granular_Results_Averaged.csv")
 
-# Clean up state names 
+
+# Cleaning up state names
 df_all['state'] = df_all['state'].str.replace('_Region_State', '', regex=False)
 df_all['state'] = df_all['state'].replace({'Anaesthetized': 'Anesthetized'})
 
@@ -79,7 +81,7 @@ def plot_feature_by_region_smart(df, region, feature, ylabel=None, save=False):
     print(posthoc_df)
 
     # ----------------------------------------------------
-    # Plotting
+    # Plottings
     # ----------------------------------------------------
     fig, ax = plt.subplots(figsize=(8,7))
     colors = ["#4C9FD1", "#F39C12", "#27AE60"]

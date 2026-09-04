@@ -227,6 +227,8 @@ Anesthetized_state
 Awake_state
 Sleep_state
 States
+States_Averaged
+States_Single
 
 ECoG_compression_features.csv
 ECoG_compression_features1.csv
@@ -238,6 +240,8 @@ KTMD_Day2.csv
 SLP_Day1.csv
 SLP_Day2.csv
 ECoG_Granular_Results.csv
+ECoG_Granular_Results_Averaged.csv
+ECoG_Granular_Results_Single.csv
 
 # Images
 .png
