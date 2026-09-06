@@ -123,29 +123,29 @@ def run_ecog_bins(base_folder, num_symbols=4):
 
 
 # --- Execution ---
-df_results_single = run_ecog_bins("States_Single")
-df_results_averaged = run_ecog_bins("States_Averaged")
+df_results_george_single = run_ecog_bins("States_George_Single")
+# df_results_chibi_averaged = run_ecog_bins("States_Chibi_Averaged")
 
-if not df_results_single.empty:
+if not df_results_george_single.empty:
     # Save full granular results
-    df_results_single.to_csv("ECoG_Granular_Results_Single.csv", index=False)
+    df_results_george_single.to_csv("ECoG_Granular_Results_George_Single.csv", index=False)
 
     # Generate and save aggregated summary
-    df_states_single = aggregate_state_unbiased(df_results_single)
-    df_states_single.to_csv("Features_State_Region_Summary_Single.csv", index=False)
+    df_states_george_single = aggregate_state_unbiased(df_results_george_single)
+    df_states_george_single.to_csv("Features_State_Region_Summary_George_Single.csv", index=False)
 
     print("\nProcessing complete!")
-    print(f"Granular Results Single Shape: {df_results_single.shape}")
-    print(f"Summary Results Single Shape:  {df_states_single.shape}")
+    print(f"Granular Results George Single Shape: {df_results_george_single.shape}")
+    print(f"Summary Results George Single Shape:  {df_states_george_single.shape}")
 
-if not df_results_averaged.empty:
-    # Save full granular results
-    df_results_averaged.to_csv("ECoG_Granular_Results_Averaged.csv", index=False)
+# if not df_results_chibi_averaged.empty:
+#     # Save full granular results
+#     df_results_chibi_averaged.to_csv("ECoG_Granular_Results_Chibi_Averaged.csv", index=False)
 
-    # Generate and save aggregated summary
-    df_states_averaged = aggregate_state_unbiased(df_results_averaged)
-    df_states_averaged.to_csv("Features_State_Region_Summary_Averaged.csv", index=False)
+#     # Generate and save aggregated summary
+#     df_states_chibi_averaged = aggregate_state_unbiased(df_results_chibi_averaged)
+#     df_states_chibi_averaged.to_csv("Features_State_Region_Summary_Averaged.csv", index=False)
 
-    print("\nProcessing complete!")
-    print(f"Granular Results Average Shape: {df_results_averaged.shape}")
-    print(f"Summary Results Average Shape:  {df_states_averaged.shape}")
+#     print("\nProcessing complete!")
+#     print(f"Granular Results Chibi Average Shape: {df_results_chibi_averaged.shape}")
+#     print(f"Summary Results Chibi Average Shape:  {df_states_chibi_averaged.shape}")

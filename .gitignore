@@ -242,6 +242,12 @@ SLP_Day2.csv
 ECoG_Granular_Results.csv
 ECoG_Granular_Results_Averaged.csv
 ECoG_Granular_Results_Single.csv
+ECoG_Granular_Results_Chibi_Averaged.csv
+ECoG_Granular_Results_Chibi_Single.csv
+ECoG_Granular_Results_George_Single.csv
+States_Chibi_Averaged
+States_Chibi_Single
+States_George_Single
 
 # Images
 .png

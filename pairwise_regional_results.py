@@ -7,8 +7,8 @@ from scipy.stats import f_oneway, levene
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
 #   Loading the granular dataset
-# df_all = pd.read_csv("ECoG_Granular_Results_Single.csv")
-df_all = pd.read_csv("ECoG_Granular_Results_Averaged.csv")
+df_all = pd.read_csv("ECoG_Granular_Results_George_Single.csv")
+# df_all = pd.read_csv("ECoG_Granular_Results_Chibi_Averaged.csv")
 
 
 # Cleaning up state names
