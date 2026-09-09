@@ -189,14 +189,3 @@ Department of Applied Mechanics and Biomedical Engineering
 Indian Institute of Technology Madras
 Chennai, 600036
 ```
-- Session-wise clean bins data <br>
-https://www.kaggle.com/datasets/simp0la/session-wise-clean-monkey-data
-
-- State-wise clean bins data <br>
-https://www.kaggle.com/datasets/simp0la/state-wise-clean-bin-data
-
-- State-wise clean bins data (30 recordings each in state) <br>
-https://www.kaggle.com/datasets/simp0la/state-wise-monkey-brain-recording-30-bins-each?select=Sleep_state
-
-- State & Region-wise brain recording (30 recordings in each state) <br>
-https://www.kaggle.com/datasets/simp0la/state-and-region-wise-monkey-brain-data-30-recs
